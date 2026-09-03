@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Submissions</title>
+</head>
+<body>
+    <h1>Submitted Forms</h1>
+    {% if items %}
+        <ul>
+            {% for item in items %}
+                <li>
+                    <strong>Username:</strong> {{ item.username }}<br>
+                    <strong>Password:</strong> {{ item.password }}<br>
+                    <strong>Submitted At:</strong> {{ item.submitted_at }}
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No submissions found.</p>
+    {% endif %}
+    <p><a href="/">Back</a></p>
+</body>
+</html>
