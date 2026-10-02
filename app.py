@@ -1,4 +1,5 @@
-from flask import Flask, request, render_template, redirect, url_for
+from flask import Flask, request, render_template, redirect, url_for, jsonify
+import json
 from datetime import datetime
 from dotenv import load_dotenv
 import os
@@ -60,6 +61,12 @@ def view():
 
     items = list(collection.find().sort('_id', -1))
     return render_template('view.html', items=items)
+
+@app.route('/api')
+def api():
+    with open('data.json', 'r') as file:
+        data = json.load(file)
+    return jsonify(data)
 
 if __name__ == '__main__':
     app.run(debug=True)
