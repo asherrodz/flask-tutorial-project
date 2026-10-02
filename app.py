@@ -62,6 +62,30 @@ def view():
     items = list(collection.find().sort('_id', -1))
     return render_template('view.html', items=items)
 
+@app.route('/submittodoitem', methods=['POST'])
+def submittodoitem():
+    if collection is None:
+        return 'MongoDB connection is not available.', 500
+
+    item_name = request.form.get('itemName')
+    item_description = request.form.get('itemDescription')
+
+    if not item_name or not item_description:
+        return 'Item Name and Item Description are required.', 400
+
+    todo_item = {
+        'itemName': item_name,
+        'itemDescription': item_description,
+        'submitted_at': datetime.utcnow()
+    }
+
+    try:
+        collection.insert_one(todo_item)
+    except PyMongoError as error:
+        return f'Error saving to MongoDB: {error}', 500
+
+    return 'To-Do item submitted successfully.'
+
 @app.route('/api')
 def api():
     with open('data.json', 'r') as file:
